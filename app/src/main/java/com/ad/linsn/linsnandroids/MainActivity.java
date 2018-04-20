@@ -1,13 +1,11 @@
 package com.ad.linsn.linsnandroids;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import java.net.ServerSocket;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,4 +18,16 @@ public class MainActivity extends AppCompatActivity {
         startService(intent);
 
     }
+
+//    @Override
+//    public void onReceive(Context context, Intent intent) {
+//        String action = intent.getAction();
+//        if(UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action))
+//        {
+//            Intent it = new Intent(context, LinsnServer.class);
+//            context.startService(new Intent(this, LinsnServer.class););
+//        }
+//
+//
+//    }
 }

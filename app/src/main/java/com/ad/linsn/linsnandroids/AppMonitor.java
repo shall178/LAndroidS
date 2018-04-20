@@ -8,6 +8,9 @@ import android.content.pm.PackageManager;
 
 import java.util.List;
 
+/*检测app是否在前台运行的代码不准确，需要重新编写*/
+
+
 public class AppMonitor {
     private String PackageName = null;
     private Context context;
@@ -17,25 +20,28 @@ public class AppMonitor {
         this.context = context;
     };
 
-    public boolean isAppRunning() {
-        boolean isAppRunning = false;
+    public void appMonitorStart() {
+//        Log.e("MainActivity","isAppRunning start");
         if(!checkPackage())
-            return false;
+            return ;
 
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(100);
+        List<ActivityManager.RunningAppProcessInfo> list = am.getRunningAppProcesses();
         if (list.size() <= 0) {
-            return false;
+            return ;
         }
-        for (ActivityManager.RunningTaskInfo info : list) {
-            if (info.baseActivity.getPackageName().equals(PackageName)) {
-                return true;
+        for (ActivityManager.RunningAppProcessInfo info : list) {
+            if (info.processName.equals(PackageName)) {
+                return;
             }
         }
-        return false;
+
+        restartApp();
     }
 
     public void restartApp(){
+
+//        Log.e("MainActivity","restartApp");
         if(PackageName.isEmpty())
             return;
 
@@ -45,11 +51,13 @@ public class AppMonitor {
     }
 
     private boolean checkPackage(){
+//        Log.e("MainActivity","checkPackage start");
         PackageInfo packageInfo = null;
 
         try {
             packageInfo = context.getPackageManager().getPackageInfo(PackageName, 0);
         } catch (PackageManager.NameNotFoundException e) {
+            packageInfo = null;
             e.printStackTrace();
         }
 

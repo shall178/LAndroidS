@@ -18,7 +18,7 @@ public class LinsnServer extends Service {
     private final int PORT = 9090;
     private static ServerSocket serverSocket = null;
     private String packageName = "com.gf.test.videoplayer";
-    private int SleepTime = 30;
+    private int SleepTime = 5;
 
 
     @Nullable
@@ -74,10 +74,9 @@ public class LinsnServer extends Service {
                     inputStream = socket.getInputStream();
                     outputStream = socket.getOutputStream();
 
-
                     inputStream.read(buffer,0,1023);
                     if(buffer.length > 0)
-                        AnalysisOrder();
+                        AnalysisOrder(buffer,inputStream,outputStream);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -94,13 +93,81 @@ public class LinsnServer extends Service {
         }
     }
 
-    private void AnalysisOrder(){
+    private void AnalysisOrder(String str,InputStream inputStream, OutputStream outputStream){
         Log.e(TAG,"AnalysisOrder start");
+        if(str.substring(0,4).equals("GET+")) {
+            int i = Integer.getInteger(str.substring(4));
+            if(i > 10 )
+                return;
+            GetOrder(i);
+            try {
+                outputStream.write(GetOrder(i).getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }else if(str.substring(0,4).equals("SET+")){
+
+
+        }else Log.e("TAG","get order error");
+
+
+    }
+
+    private String GetOrder(int i) {
+        switch (i){
+            case 0:{
+                DeviceInfo di = new DeviceInfo(getApplicationContext());
+                return di.getDevInfo();
+            }
+
+            case 1:{
+                //wifi scaninfo
+
+            }
+
+            case 2:{
+                // ethernet info
+
+            }
+
+            case 3:{
+                //ap info
+                APManager apManager = new APManager(getApplicationContext());
+                return apManager.getApInfo();
+            }
+
+            case 4:{
+                // hdmi info
+                OtherFunction otherFunction = new OtherFunction(getApplicationContext());
+                return otherFunction.get_hdmi_mode(0);
+            }
+
+            case 5:{
+                // audio info
+                AudioManage audioManage = new AudioManage(getApplicationContext());
+                return audioManage.get_volume();
+            }
+
+            case 6:{
+                //time
+                return String.valueOf(SleepTime);
+            }
+
+            case 7:{
+                OtherFunction otherFunction = new OtherFunction(getApplicationContext());
+                return otherFunction.get_hdmi_mode(1);
+            }
+
+        }
+
+
 
 
     }
 
 
+    //清空packageName，使Thread一直运行下去，如果接收到新的参数，则结束线程，重新开始。
     class appMonitor extends Thread{
 
         public void run(){
@@ -108,16 +175,15 @@ public class LinsnServer extends Service {
             packageName = null;
 
             do {
-                if(am.isAppRunning()) {
-                    try {
-                        Thread.sleep(SleepTime);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    break;
+                am.appMonitorStart();
+
+                try {
+                    Thread.sleep(SleepTime);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-                am.restartApp();
-            }while(packageName.isEmpty());
+
+            }while(packageName == null);
         }
     }
 

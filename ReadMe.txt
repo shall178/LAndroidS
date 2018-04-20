@@ -18,6 +18,8 @@ All order:
     获取后台程序检测时间：           (1 << 6)
         time
 
+    获取HDMI 支持的分辨率           7
+
 
 设置： SET
     WIFI：
@@ -25,7 +27,7 @@ All order:
         打开连接指定的wifi       a+wifiName+password
         设置动态 /静态IP             i+a/ipAddress
         例如：打开/关闭wifi： SET+wifi+o/c
-             打开连接指定wifi： SET++wifi+a+wifiName+password
+             打开连接指定wifi： SET+wifi+a+wifiName+password
              设置WIFI静态IP：SET+wifi+i+ipAddress
 
     以太网：

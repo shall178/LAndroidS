@@ -54,37 +54,29 @@ public class DeviceInfo {
         else
             return sdcard_size;
     }
+//
+//    private String  get_hdmi_info(){
+//        byte buffer[] = new byte[50];
+//        File file = new File("/sys/class/display/HDMI/mode");
+//        try {
+//            FileInputStream is  = new FileInputStream(file);
+//            is.read(buffer, 0 , 50);
+//            is.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        String hdmi_info = "hdmi"+ buffer.toString();
+//
+//        return hdmi_info;
+//    }
 
-    private String  get_hdmi_info(){
-        byte buffer[] = new byte[50];
-        File file = new File("/sys/class/display/HDMI/mode");
-        try {
-            FileInputStream is  = new FileInputStream(file);
-            is.read(buffer, 0 , 50);
-            is.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        String hdmi_info = "hdmi"+ buffer.toString();
-
-        return hdmi_info;
-    }
-
-    private String get_volume(){
-        AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-
-        int max = am.getStreamMaxVolume(AudioManager.STREAM_SYSTEM);
-        int current = am.getStreamMaxVolume(AudioManager.STREAM_SYSTEM);
-
-        String volume_info = "audio" + "{" + max + "+" + current + "}";
-        return volume_info;
-    }
 
 
     public String getDevInfo(){
 
-        return get_system_size() + get_sdcard_size() + get_hdmi_info() + get_volume();
+        return get_system_size() + get_sdcard_size();
 
     }
 

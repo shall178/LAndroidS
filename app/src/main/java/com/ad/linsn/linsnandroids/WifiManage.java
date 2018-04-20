@@ -108,5 +108,26 @@ public class WifiManage {
             return 0;
     }
 
+    public void getScanList(){
+        int i =0;
+        List<String> wifilist;
+        WifiManager mwifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+        if(!mwifiManager.isWifiEnabled())
+            mwifiManager.setWifiEnabled(true);
+
+        mwifiManager.startScan();
+
+        List<ScanResult> mWifiList = mwifiManager.getScanResults();
+        if(mWifiList == null)
+            return;
+
+        for ( ScanResult sr : mWifiList ) {
+            i++;
+//            String str = sr.SSID + "+" +
+        }
+    }
+
+
+
 
 }

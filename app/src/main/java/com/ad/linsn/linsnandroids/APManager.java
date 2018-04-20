@@ -104,4 +104,35 @@ public class APManager {
 
         return false;
     }
+
+    public String getApInfo(){
+        WifiManager wifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+        Method method = null;
+        WifiConfiguration wifiConfiguration = null;
+
+        try {
+            method = wifiManager.getClass().getMethod("getWifiApConfiguration");
+            wifiConfiguration = (WifiConfiguration) method.invoke(wifiManager);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+        if(wifiConfiguration == null)
+            return null;
+
+        String ssid = wifiConfiguration.SSID;
+        String password = wifiConfiguration.preSharedKey;
+
+        String state = null;
+        if(isWifiApEnable(wifiManager))
+            state = "o";
+        else state = "c";
+
+        return state + "+" + ssid + "+" + password;
+    }
+
 }
