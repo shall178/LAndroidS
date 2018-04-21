@@ -5,6 +5,10 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.List;
 
 public class WifiManage {
@@ -12,12 +16,6 @@ public class WifiManage {
 
     public WifiManage(Context context){
         this.mContext = context;
-    }
-
-    public void closeWifi(){
-        WifiManager wifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
-        if(wifiManager.isWifiEnabled())
-            wifiManager.setWifiEnabled(false);
     }
 
     public void openWifi(String ssid, String password){
@@ -108,9 +106,9 @@ public class WifiManage {
             return 0;
     }
 
-    public void getScanList(){
+    public List<String> getScanList(){
         int i =0;
-        List<String> wifilist;
+        List<String> wifilist = null;
         WifiManager mwifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
         if(!mwifiManager.isWifiEnabled())
             mwifiManager.setWifiEnabled(true);
@@ -119,12 +117,32 @@ public class WifiManage {
 
         List<ScanResult> mWifiList = mwifiManager.getScanResults();
         if(mWifiList == null)
-            return;
+            return null;
 
         for ( ScanResult sr : mWifiList ) {
             i++;
-//            String str = sr.SSID + "+" +
+            String str = sr.SSID + "+" +sr.level;
+            wifilist.add(str);
         }
+
+        return wifilist;
+    }
+
+    public void setWifiEnable(boolean enable){
+        WifiManager mwifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+        if(enable){
+            if(!mwifiManager.isWifiEnabled())
+                mwifiManager.setWifiEnabled(enable);
+        }else
+            if(mwifiManager.isWifiEnabled())
+                mwifiManager.setWifiEnabled(enable);
+
+    }
+
+    public void setWifiStaticIP(String str){
+        WifiManager mwifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+
+
     }
 
 
