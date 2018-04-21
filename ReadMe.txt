@@ -22,33 +22,33 @@ All order:
 
 
 设置： SET
-    WIFI：
+1    WIFI：
         打开/关闭               o/c
         打开连接指定的wifi       a+wifiName+password
         设置动态 /静态IP             i+a/ipAddress
-        例如：打开/关闭wifi： SET+wifi+o/c
-             打开连接指定wifi： SET+wifi+a+wifiName+password
-             设置WIFI静态IP：SET+wifi+i+ipAddress
+        例如：打开/关闭wifi： SET+1+o/c
+             打开连接指定wifi： SET+2+a{wifiName+password}
+             设置WIFI静态IP：SET+1+s+ipAddress
 
-    以太网：
+2    以太网：
         设置以太网动态/静态IP      eth+a/ip
-        例如：SET+eth+ip
+        例如：SET2+ip
 
-    AP：
+3    AP：
         打开/关闭           ap+o/c
         打开并且设置热点名称和密码  ap+name+password
         例如：
-            打开/关闭热点：SET+ap+o/c
-            设置热点名称：SET+ap+name+password
+            打开/关闭热点：SET+3+o/c
+            设置热点名称：SET+3+s{name+password}
 
-    HDMI：
-        设置HDMI 分辨率  SET+hdmi+resolution
+4    HDMI：
+        设置HDMI 分辨率  SET+4+resolution
 
-    AUDIO：
-        设置AUDIO的大小  SET+audio+num
+5    AUDIO：
+        设置AUDIO的大小  SET+5+num
 
-    后台程序时间：
-        设置后台程序检测时间  SET+app+time
+6    后台程序时间：
+        设置后台程序检测时间  SET+6+time
 
 
 
